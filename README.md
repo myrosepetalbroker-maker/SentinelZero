@@ -8,7 +8,7 @@
 
 ## 🎯 Overview
 **SentinelZero** is a **proactive, continuous risk analysis platform** for smart contracts and DeFi protocols on BNB Chain.  
-It aggregates **historical exploits**, applies a **standardized risk taxonomy**, and generates **dynamic risk scores**, helping developers, investors, and protocol teams **prevent exploits before they occur**.
+It aggregates **historical exploits**, applies a **standardized risk taxonomy**, and generates **dynamic risk scores**, helping developers, auditors, and investors **prevent exploits before they occur**.
 
 > “Building trust in BNB Chain, one contract at a time.”
 
@@ -31,8 +31,6 @@ It aggregates **historical exploits**, applies a **standardized risk taxonomy**,
 ---
 
 ## 🔗 Architecture Overview
-```mermaid
-graph TD;
     A[📥 Public Exploit Data] --> B[🧹 Data Ingestion & Cleaning]
     B --> C[🗂️ Risk Taxonomy Classification]
     C --> D[⚖️ Dynamic Risk Scoring Engine]
@@ -70,12 +68,11 @@ Phase 2	$30,000
 Phase 3	$45,000
 Phase 4	$20,000
 Total: $110,000	
-🖼️ Dashboard Preview
-
-<img width="1536" height="1024" alt="ChatGPT Image 9 de jan  de 2026, 11_04_59" src="https://github.com/user-attachments/assets/8a212e5a-6697-442e-ade9-5f5b37eca076" />
+🖼️ Dashboard Preview<img width="1536" height="1024" alt="ChatGPT Image 9 de jan  de 2026, 11_04_59" src="https://github.com/user-attachments/assets/4c6fdd79-00b6-4277-8af1-0a7db9fd40ab" />
 
 
 
+Generated mockup of the MVP for initial presentation.
 
 🤝 Collaboration & Contribution
 
@@ -102,4 +99,5 @@ Halborn Top 100 DeFi Hacks
 PeckShield & CertiK blogs
 
 Frontal Blockchain Timeline
+
 
