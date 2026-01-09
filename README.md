@@ -68,7 +68,8 @@ Phase 2	$30,000
 Phase 3	$45,000
 Phase 4	$20,000
 Total: $110,000	
-🖼️ Dashboard Preview<img width="1536" height="1024" alt="ChatGPT Image 9 de jan  de 2026, 11_04_59" src="https://github.com/user-attachments/assets/4c6fdd79-00b6-4277-8af1-0a7db9fd40ab" />
+🖼️ Dashboard Preview <img width="1536" height="1024" alt="A_2D_digital_illustration_showcases_the_SentinelZe" src="https://github.com/user-attachments/assets/45abfd33-ee8c-48ea-b596-c80bc2f7fec2" />
+
 
 
 
