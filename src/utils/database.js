@@ -12,6 +12,11 @@ class Database {
       exploits: [],
       approvals: []
     };
+    this.idCounter = Date.now();
+  }
+
+  generateId() {
+    return (this.idCounter++).toString();
   }
 
   async initialize() {
@@ -47,7 +52,7 @@ class Database {
   async addContract(contract) {
     this.data.contracts.push({
       ...contract,
-      id: Date.now().toString(),
+      id: this.generateId(),
       timestamp: new Date().toISOString()
     });
     await this.save();
@@ -56,7 +61,7 @@ class Database {
   async addAnalysis(analysis) {
     this.data.analyses.push({
       ...analysis,
-      id: Date.now().toString(),
+      id: this.generateId(),
       timestamp: new Date().toISOString()
     });
     await this.save();
@@ -65,7 +70,7 @@ class Database {
   async addApproval(approval) {
     this.data.approvals.push({
       ...approval,
-      id: Date.now().toString(),
+      id: this.generateId(),
       timestamp: new Date().toISOString()
     });
     await this.save();

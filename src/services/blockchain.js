@@ -5,6 +5,14 @@ class BlockchainService {
   constructor() {
     this.provider = null;
     this.connected = false;
+    
+    // Mock data constants for offline mode
+    this.mockData = {
+      contractCode: '0x' + '60806040'.repeat(100),
+      balance: '42.5',
+      transactionCount: 156,
+      blockNumber: 43500000
+    };
   }
 
   async connect() {
@@ -49,7 +57,7 @@ class BlockchainService {
       if (!this.connected) {
         // Return mock data in offline mode
         logger.warn('Using mock data - not connected to blockchain');
-        return '0x' + '60806040'.repeat(100); // Mock contract bytecode
+        return this.mockData.contractCode;
       }
       
       const code = await this.provider.getCode(address);
@@ -65,7 +73,7 @@ class BlockchainService {
       if (!this.connected) {
         // Return mock data in offline mode
         logger.warn('Using mock data - not connected to blockchain');
-        return '42.5';
+        return this.mockData.balance;
       }
       
       const balance = await this.provider.getBalance(address);
@@ -81,7 +89,7 @@ class BlockchainService {
       if (!this.connected) {
         // Return mock data in offline mode
         logger.warn('Using mock data - not connected to blockchain');
-        return 156;
+        return this.mockData.transactionCount;
       }
       
       const count = await this.provider.getTransactionCount(address);
@@ -96,7 +104,7 @@ class BlockchainService {
     try {
       if (!this.connected) {
         // Return mock data in offline mode
-        return 43500000;
+        return this.mockData.blockNumber;
       }
       
       return await this.provider.getBlockNumber();

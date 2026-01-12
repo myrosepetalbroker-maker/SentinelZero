@@ -7,7 +7,7 @@ class AutoApprovalService {
     this.threshold = parseInt(process.env.AUTO_APPROVE_THRESHOLD) || 70;
     this.autoApproveLowRisk = process.env.AUTO_APPROVE_LOW_RISK === 'true';
     this.autoApproveMediumRisk = process.env.AUTO_APPROVE_MEDIUM_RISK === 'true';
-    this.autoApproveHighRisk = process.env.AUTO_APPROVE_HIGH_RISK === 'false';
+    this.autoApproveHighRisk = process.env.AUTO_APPROVE_HIGH_RISK === 'true';
   }
 
   getStatus() {

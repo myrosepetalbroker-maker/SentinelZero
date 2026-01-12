@@ -10,6 +10,13 @@ class RiskAnalyzer {
       medium: parseInt(process.env.RISK_THRESHOLD_MEDIUM) || 60,
       high: parseInt(process.env.RISK_THRESHOLD_HIGH) || 80
     };
+    
+    // Balance risk thresholds in BNB
+    this.balanceThresholds = {
+      low: 1,
+      moderate: 100,
+      significant: 1000
+    };
   }
 
   async analyzeContract(contractAddress) {
@@ -87,9 +94,9 @@ class RiskAnalyzer {
   assessBalanceRisk(balance) {
     const balanceFloat = parseFloat(balance);
     
-    if (balanceFloat < 1) return { score: 10, description: 'Low value locked' };
-    if (balanceFloat < 100) return { score: 30, description: 'Moderate value locked' };
-    if (balanceFloat < 1000) return { score: 50, description: 'Significant value locked' };
+    if (balanceFloat < this.balanceThresholds.low) return { score: 10, description: 'Low value locked' };
+    if (balanceFloat < this.balanceThresholds.moderate) return { score: 30, description: 'Moderate value locked' };
+    if (balanceFloat < this.balanceThresholds.significant) return { score: 50, description: 'Significant value locked' };
     return { score: 70, description: 'High value locked' };
   }
 
@@ -185,7 +192,8 @@ class RiskAnalyzer {
     }
 
     if (vulnerabilities.length > 0) {
-      recommendations.push(`Address ${vulnerabilities.length} identified vulnerability/vulnerabilities.`);
+      const vulnCount = vulnerabilities.length;
+      recommendations.push(`Address ${vulnCount} identified ${vulnCount === 1 ? 'vulnerability' : 'vulnerabilities'}.`);
     }
 
     return recommendations;
