@@ -181,9 +181,12 @@ async function analyzeContract(contractAddress, protocolSlug = null) {
       vulnerabilities.push('price_oracle_manipulation');
     }
     
-    // Check for governance functions
-    if (sourceCode.includes('onlyOwner') || sourceCode.includes('onlyGovernance')) {
-      // This is actually good, but flag for review
+    // Check for missing access control (but don't flag proper access control as a vulnerability)
+    const hasAccessControl = sourceCode.includes('onlyOwner') || sourceCode.includes('onlyGovernance') || sourceCode.includes('AccessControl');
+    const hasPublicFunctions = sourceCode.includes('function') && sourceCode.includes('public');
+    
+    // Only flag if there are public functions without apparent access control
+    if (hasPublicFunctions && !hasAccessControl) {
       vulnerabilities.push('access_control');
     }
   }

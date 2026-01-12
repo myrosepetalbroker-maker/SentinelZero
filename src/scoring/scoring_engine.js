@@ -98,15 +98,42 @@ function getHistoricalContext(contractData) {
 }
 
 /**
- * Find similar historical incidents
+ * Find similar historical incidents from the database
  */
 function findSimilarIncidents(vulnerabilities) {
-  // In production, this would query the historical_exploits.json
-  return vulnerabilities.map(vuln => ({
-    vulnerability: vuln,
-    incidentCount: 3, // Example
-    totalLoss: '$500M' // Example
-  }));
+  const fs = require('fs');
+  const path = require('path');
+  
+  try {
+    // Load historical exploits data
+    const dataPath = path.join(__dirname, '../../data/historical_exploits.json');
+    const historicalData = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+    
+    // Count incidents for each vulnerability type
+    return vulnerabilities.map(vuln => {
+      const matchingIncidents = historicalData.exploits.filter(exploit => {
+        const category = exploit.vulnerability_category.toLowerCase().replace(/[\s\/]/g, '_');
+        return category.includes(vuln.toLowerCase()) || vuln.toLowerCase().includes(category);
+      });
+      
+      const totalLoss = matchingIncidents.reduce((sum, incident) => 
+        sum + incident.financial_impact_usd, 0
+      );
+      
+      return {
+        vulnerability: vuln,
+        incidentCount: matchingIncidents.length,
+        totalLoss: `$${(totalLoss / 1000000).toFixed(0)}M`
+      };
+    });
+  } catch (error) {
+    // Fallback to placeholder if file not found
+    return vulnerabilities.map(vuln => ({
+      vulnerability: vuln,
+      incidentCount: 0,
+      totalLoss: 'N/A'
+    }));
+  }
 }
 
 /**

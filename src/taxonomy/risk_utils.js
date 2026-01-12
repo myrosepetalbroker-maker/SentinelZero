@@ -12,6 +12,13 @@ const path = require('path');
 const taxonomyPath = path.join(__dirname, 'risk_taxonomy.json');
 const taxonomy = JSON.parse(fs.readFileSync(taxonomyPath, 'utf8'));
 
+// Create a lookup map for better performance
+const categoryLookup = new Map();
+Object.entries(taxonomy.risk_categories).forEach(([key, category]) => {
+  categoryLookup.set(key, category);
+  categoryLookup.set(category.id, category);
+});
+
 /**
  * Calculate base risk score for a contract based on identified vulnerabilities
  * @param {Array<string>} vulnerabilities - Array of vulnerability category IDs
@@ -23,11 +30,7 @@ function calculateBaseRiskScore(vulnerabilities) {
   }
 
   const weights = vulnerabilities.map(vulnId => {
-    const category = Object.values(taxonomy.risk_categories).find(
-      cat => cat.id === vulnId || Object.keys(taxonomy.risk_categories).find(
-        key => key === vulnId
-      )
-    );
+    const category = categoryLookup.get(vulnId);
     return category ? category.severity_weight : 0;
   });
 
