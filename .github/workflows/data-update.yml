@@ -44,8 +44,7 @@ jobs:
             python scripts/update_data.py
           else
             echo "No update script found. Creating placeholder..."
-            echo "# Data update placeholder" \
-              > data/exploits/README.md
+            echo "# Data update placeholder" > data/exploits/README.md
           fi
 
           # Check if there are changes

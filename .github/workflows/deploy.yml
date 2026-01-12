@@ -182,14 +182,14 @@ jobs:
     steps:
       - name: Deployment Summary
         run: |
-          SUMMARY=$GITHUB_STEP_SUMMARY
-          echo "## Deployment Summary" >> $SUMMARY
-          echo "" >> $SUMMARY
-          echo "✅ Deployment successful" >> $SUMMARY
-          echo "- Commit: ${{ github.sha }}" >> $SUMMARY
+          SUMMARY="$GITHUB_STEP_SUMMARY"
+          echo "## Deployment Summary" >> "$SUMMARY"
+          echo "" >> "$SUMMARY"
+          echo "✅ Deployment successful" >> "$SUMMARY"
+          echo "- Commit: ${{ github.sha }}" >> "$SUMMARY"
           ENV="${{ github.event.inputs.environment || 'staging' }}"
-          echo "- Environment: $ENV" >> $SUMMARY
-          echo "- Timestamp: $(date -u)" >> $SUMMARY
+          echo "- Environment: $ENV" >> "$SUMMARY"
+          echo "- Timestamp: $(date -u)" >> "$SUMMARY"
 
       - name: Notify Success
         run: |
