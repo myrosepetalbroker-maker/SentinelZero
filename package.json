@@ -1,0 +1,43 @@
+{
+  "name": "sentinelzero",
+  "version": "1.0.0",
+  "description": "Continuous Risk Analysis Platform for Smart Contracts on BNB Chain",
+  "main": "examples.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "examples": "node examples.js",
+    "dashboard": "cd dashboard && npm start",
+    "dashboard:build": "cd dashboard && npm run build",
+    "dashboard:install": "cd dashboard && npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LCMF2022/SentinelZero.git"
+  },
+  "keywords": [
+    "blockchain",
+    "security",
+    "smart-contracts",
+    "bnb-chain",
+    "defi",
+    "risk-analysis",
+    "vulnerability",
+    "monitoring"
+  ],
+  "author": "SentinelZero Team",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/LCMF2022/SentinelZero/issues"
+  },
+  "homepage": "https://github.com/LCMF2022/SentinelZero#readme",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "web3": "^4.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.54.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

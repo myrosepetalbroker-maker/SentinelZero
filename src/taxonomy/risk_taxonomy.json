@@ -1,0 +1,253 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-01-12",
+  "description": "Comprehensive risk classification framework for smart contract vulnerabilities",
+  "risk_categories": {
+    "reentrancy": {
+      "id": "RISK-001",
+      "name": "Reentrancy Attacks",
+      "severity_weight": 0.95,
+      "description": "Vulnerabilities where external calls can re-enter the contract before state updates",
+      "indicators": [
+        "External calls before state updates",
+        "Missing reentrancy guards",
+        "Unprotected callback functions"
+      ],
+      "mitigation_strategies": [
+        "Use ReentrancyGuard from OpenZeppelin",
+        "Follow Checks-Effects-Interactions pattern",
+        "Use pull payment patterns"
+      ],
+      "historical_examples": ["EXP-011", "EXP-020"]
+    },
+    "price_oracle_manipulation": {
+      "id": "RISK-002",
+      "name": "Price Oracle Manipulation",
+      "severity_weight": 0.90,
+      "description": "Exploitation of price feeds through flash loans or low-liquidity markets",
+      "indicators": [
+        "Single source price oracle",
+        "No TWAP or time-weighted mechanisms",
+        "Low liquidity dependency",
+        "Flash loan vulnerability"
+      ],
+      "mitigation_strategies": [
+        "Use Chainlink or multiple oracle sources",
+        "Implement TWAP with adequate time windows",
+        "Add price deviation checks",
+        "Use flash loan resistant oracles"
+      ],
+      "historical_examples": ["EXP-002", "EXP-010", "EXP-014", "EXP-019"]
+    },
+    "logic_error": {
+      "id": "RISK-003",
+      "name": "Smart Contract Logic Errors",
+      "severity_weight": 0.85,
+      "description": "Flaws in business logic implementation allowing unintended behaviors",
+      "indicators": [
+        "Missing input validation",
+        "Incorrect state transitions",
+        "Math calculation errors",
+        "Unchecked return values"
+      ],
+      "mitigation_strategies": [
+        "Comprehensive unit testing",
+        "Formal verification",
+        "Multiple security audits",
+        "Gradual rollout with monitoring"
+      ],
+      "historical_examples": ["EXP-001", "EXP-004", "EXP-005", "EXP-008", "EXP-013", "EXP-015", "EXP-017", "EXP-018", "EXP-022"]
+    },
+    "governance_exploit": {
+      "id": "RISK-004",
+      "name": "Governance Exploits",
+      "severity_weight": 0.88,
+      "description": "Attacks on governance mechanisms including flash loan voting and key compromises",
+      "indicators": [
+        "Insufficient voting delays",
+        "No quorum requirements",
+        "Centralized multisig with low threshold",
+        "Flash loan enabled governance tokens"
+      ],
+      "mitigation_strategies": [
+        "Implement time-locks on governance actions",
+        "Require token vesting for voting power",
+        "Use vote-escrowed tokens",
+        "Multi-signature with high threshold"
+      ],
+      "historical_examples": ["EXP-003", "EXP-006", "EXP-007", "EXP-012", "EXP-023"]
+    },
+    "cryptographic_vulnerability": {
+      "id": "RISK-005",
+      "name": "Cryptographic Vulnerabilities",
+      "severity_weight": 0.92,
+      "description": "Weaknesses in cryptographic implementations, signature verification, or key management",
+      "indicators": [
+        "Weak signature validation",
+        "Missing nonce checks",
+        "Predictable randomness",
+        "Inadequate key generation"
+      ],
+      "mitigation_strategies": [
+        "Use battle-tested cryptographic libraries",
+        "Implement proper nonce mechanisms",
+        "Use hardware security modules for key storage",
+        "Regular key rotation policies"
+      ],
+      "historical_examples": ["EXP-009", "EXP-012", "EXP-021"]
+    },
+    "cross_chain_bridge": {
+      "id": "RISK-006",
+      "name": "Cross-Chain Bridge Vulnerabilities",
+      "severity_weight": 0.93,
+      "description": "Exploits targeting bridge contracts and cross-chain communication",
+      "indicators": [
+        "Insufficient validator diversity",
+        "Weak message verification",
+        "Missing replay protection",
+        "Centralized bridge design"
+      ],
+      "mitigation_strategies": [
+        "Implement robust multi-signature schemes",
+        "Add message hash verification",
+        "Use optimistic verification with fraud proofs",
+        "Distribute validator control"
+      ],
+      "historical_examples": ["EXP-001", "EXP-003", "EXP-004", "EXP-005", "EXP-007", "EXP-009", "EXP-013", "EXP-021", "EXP-023"]
+    },
+    "infrastructure_frontend": {
+      "id": "RISK-007",
+      "name": "Infrastructure & Front-end Compromises",
+      "severity_weight": 0.75,
+      "description": "Attacks on web infrastructure, DNS, or front-end applications",
+      "indicators": [
+        "Centralized front-end hosting",
+        "Missing content integrity checks",
+        "No DNS security extensions",
+        "Lack of CSP headers"
+      ],
+      "mitigation_strategies": [
+        "Use IPFS or decentralized hosting",
+        "Implement Subresource Integrity (SRI)",
+        "Enable DNSSEC",
+        "Add Content Security Policy headers"
+      ],
+      "historical_examples": ["EXP-016"]
+    },
+    "mev_frontrunning": {
+      "id": "RISK-008",
+      "name": "MEV & Front-running",
+      "severity_weight": 0.70,
+      "description": "Maximal Extractable Value attacks and transaction ordering manipulation",
+      "indicators": [
+        "Public transaction mempool exposure",
+        "Predictable transaction ordering",
+        "No slippage protection",
+        "Lack of private transaction options"
+      ],
+      "mitigation_strategies": [
+        "Use Flashbots or private mempools",
+        "Implement commit-reveal schemes",
+        "Add slippage protection",
+        "Use batch auctions"
+      ],
+      "historical_examples": []
+    },
+    "access_control": {
+      "id": "RISK-009",
+      "name": "Access Control Failures",
+      "severity_weight": 0.87,
+      "description": "Insufficient or misconfigured access controls allowing unauthorized actions",
+      "indicators": [
+        "Missing access modifiers",
+        "Incorrect role assignments",
+        "Unprotected initialization",
+        "Missing ownership checks"
+      ],
+      "mitigation_strategies": [
+        "Use OpenZeppelin AccessControl",
+        "Implement proper role hierarchies",
+        "Add initialization protection",
+        "Regular access control audits"
+      ],
+      "historical_examples": ["EXP-003", "EXP-007", "EXP-023"]
+    },
+    "flash_loan_attack": {
+      "id": "RISK-010",
+      "name": "Flash Loan Attacks",
+      "severity_weight": 0.82,
+      "description": "Exploitation using uncollateralized flash loans to manipulate protocol state",
+      "indicators": [
+        "Single transaction state dependency",
+        "Inadequate price slippage checks",
+        "Unprotected liquidation mechanisms",
+        "Governance tokens without time-locks"
+      ],
+      "mitigation_strategies": [
+        "Implement multi-block TWAP oracles",
+        "Add transaction origin checks where appropriate",
+        "Use time-weighted governance",
+        "Implement rate limiting"
+      ],
+      "historical_examples": ["EXP-002", "EXP-006", "EXP-014", "EXP-015", "EXP-017", "EXP-019"]
+    }
+  },
+  "severity_levels": {
+    "critical": {
+      "score_range": [90, 100],
+      "description": "Immediate threat with high probability of significant financial loss",
+      "color": "#FF0000",
+      "action_required": "Immediate pause and remediation required"
+    },
+    "high": {
+      "score_range": [75, 89],
+      "description": "Serious vulnerability requiring urgent attention",
+      "color": "#FF6B00",
+      "action_required": "Urgent review and fix within 24-48 hours"
+    },
+    "medium": {
+      "score_range": [50, 74],
+      "description": "Moderate risk requiring scheduled remediation",
+      "color": "#FFD700",
+      "action_required": "Plan fix in next development cycle"
+    },
+    "low": {
+      "score_range": [25, 49],
+      "description": "Minor issues with limited impact",
+      "color": "#90EE90",
+      "action_required": "Address in regular maintenance"
+    },
+    "informational": {
+      "score_range": [0, 24],
+      "description": "Best practice recommendations",
+      "color": "#87CEEB",
+      "action_required": "Consider for future improvements"
+    }
+  },
+  "scoring_factors": {
+    "vulnerability_presence": {
+      "weight": 0.40,
+      "description": "Base score from identified vulnerability categories"
+    },
+    "tvl_exposure": {
+      "weight": 0.25,
+      "description": "Total Value Locked in the protocol"
+    },
+    "audit_status": {
+      "weight": 0.15,
+      "description": "Quality and recency of security audits"
+    },
+    "code_complexity": {
+      "weight": 0.10,
+      "description": "Code complexity and external dependencies"
+    },
+    "time_in_production": {
+      "weight": 0.05,
+      "description": "Length of time deployed without incidents"
+    },
+    "bug_bounty": {
+      "weight": 0.05,
+      "description": "Presence and quality of bug bounty program"
+    }
+  }
+}

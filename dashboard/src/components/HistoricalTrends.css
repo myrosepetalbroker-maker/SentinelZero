@@ -1,0 +1,37 @@
+.historical-trends {
+  min-height: 400px;
+}
+
+.chart-container {
+  height: 300px;
+  margin: var(--spacing-lg) 0;
+}
+
+.trend-insights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-md);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.insight-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.insight-label {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.insight-value {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.trend-stable {
+  color: var(--color-warning);
+}
