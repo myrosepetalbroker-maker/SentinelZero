@@ -1,0 +1,97 @@
+{
+  "version": "1.0",
+  "categories": [
+    {
+      "id": "reentrancy",
+      "name": "Reentrancy Attacks",
+      "description": "Vulnerabilities where external contract calls allow reentry before state updates",
+      "severity": "high",
+      "examples": ["DAO Hack", "Uniswap/Lendf.Me"]
+    },
+    {
+      "id": "access_control",
+      "name": "Access Control Issues",
+      "description": "Improper authorization allowing unauthorized access to sensitive functions",
+      "severity": "high",
+      "examples": ["Parity Wallet", "Poly Network"]
+    },
+    {
+      "id": "integer_overflow",
+      "name": "Integer Overflow/Underflow",
+      "description": "Arithmetic operations that exceed variable limits",
+      "severity": "medium",
+      "examples": ["BEC Token", "SMT Token"]
+    },
+    {
+      "id": "flash_loan",
+      "name": "Flash Loan Attacks",
+      "description": "Price manipulation through uncollateralized loans",
+      "severity": "high",
+      "examples": ["bZx", "Harvest Finance", "Cream Finance"]
+    },
+    {
+      "id": "oracle_manipulation",
+      "name": "Oracle Manipulation",
+      "description": "Exploiting price feed vulnerabilities",
+      "severity": "high",
+      "examples": ["Synthetix", "Compound"]
+    },
+    {
+      "id": "front_running",
+      "name": "Front-Running",
+      "description": "Transaction ordering exploitation",
+      "severity": "medium",
+      "examples": ["MEV attacks", "DEX arbitrage"]
+    },
+    {
+      "id": "governance",
+      "name": "Governance Exploits",
+      "description": "Manipulation of voting or governance mechanisms",
+      "severity": "high",
+      "examples": ["Beanstalk", "Tornado Cash governance"]
+    },
+    {
+      "id": "logic_error",
+      "name": "Logic Errors",
+      "description": "Flaws in contract business logic",
+      "severity": "medium",
+      "examples": ["Various DeFi protocols"]
+    },
+    {
+      "id": "external_call",
+      "name": "Unsafe External Calls",
+      "description": "Unprotected or unchecked external contract interactions",
+      "severity": "medium",
+      "examples": ["delegatecall vulnerabilities"]
+    },
+    {
+      "id": "timestamp_dependence",
+      "name": "Timestamp Dependence",
+      "description": "Relying on block.timestamp for critical logic",
+      "severity": "low",
+      "examples": ["Gambling contracts"]
+    }
+  ],
+  "riskFactors": [
+    {
+      "factor": "contract_complexity",
+      "weight": 0.25,
+      "description": "Code complexity and size"
+    },
+    {
+      "factor": "value_locked",
+      "weight": 0.25,
+      "description": "Total value locked in contract"
+    },
+    {
+      "factor": "audit_status",
+      "weight": 0.20,
+      "description": "Security audit completion and quality"
+    },
+    {
+      "factor": "known_vulnerabilities",
+      "weight": 0.30,
+      "description": "Presence of known vulnerability patterns"
+    }
+  ]
+}
