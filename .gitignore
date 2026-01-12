@@ -15,6 +15,9 @@ yarn-error.log*
 
 # Database
 data/
+!src/data/
+src/data/*.json
+!src/data/riskTaxonomy.json
 
 # Build outputs
 dist/
