@@ -1,0 +1,139 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  validate:
+    name: Validate Repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Check Markdown Files
+        run: |
+          echo "Checking markdown files for basic formatting..."
+          find . -name "*.md" -type f | while read file; do
+            echo "Checking $file"
+            if [ ! -s "$file" ]; then
+              echo "Error: $file is empty"
+              exit 1
+            fi
+          done
+
+      - name: Check Documentation Structure
+        run: |
+          echo "Validating documentation structure..."
+          if [ ! -f "README.md" ]; then
+            echo "Error: README.md is required"
+            exit 1
+          fi
+          echo "Documentation structure is valid"
+
+  test-python:
+    name: Python Tests
+    runs-on: ubuntu-latest
+    if: hashFiles('**/*.py') != ''
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+          if [ -f requirements-dev.txt ]; then
+            pip install -r requirements-dev.txt
+          fi
+
+      - name: Lint with Flake8
+        run: |
+          if [ -f requirements-dev.txt ] && \
+             grep -q flake8 requirements-dev.txt; then
+            flake8 . --count --select=E9,F63,F7,F82 \
+              --show-source --statistics
+            flake8 . --count --exit-zero --max-complexity=10 \
+              --max-line-length=127 --statistics
+          else
+            echo "Flake8 not installed, skipping linting"
+          fi
+
+      - name: Run Tests
+        run: |
+          if [ -f pytest.ini ] || [ -d tests ]; then
+            python -m pytest tests/ -v --tb=short
+          else
+            echo "No tests found, skipping"
+          fi
+
+  test-nodejs:
+    name: Node.js Tests
+    runs-on: ubuntu-latest
+    if: hashFiles('**/package.json') != ''
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Lint Code
+        run: |
+          if npm run lint --if-present; then
+            echo "Linting completed"
+          fi
+
+      - name: Run Tests
+        run: npm test
+
+  security-scan:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Run Trivy Vulnerability Scanner
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy Results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'

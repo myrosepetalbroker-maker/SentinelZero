@@ -1,0 +1,93 @@
+name: Automated Data Updates
+
+on:
+  schedule:
+    # Run weekly on Sunday at 00:00 UTC
+    - cron: '0 0 * * 0'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  update-exploit-database:
+    name: Update Historical Exploit Database
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        if: hashFiles('**/scripts/update_data.py') != ''
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        if: hashFiles('**/requirements.txt') != ''
+        run: |
+          pip install -r requirements.txt
+
+      - name: Fetch Updated Exploit Data
+        id: fetch-data
+        run: |
+          echo "Starting data update process..."
+
+          # Create data directory if it doesn't exist
+          mkdir -p data/exploits
+
+          # Check if update script exists
+          if [ -f "scripts/update_data.py" ]; then
+            echo "Running data update script..."
+            python scripts/update_data.py
+          else
+            echo "No update script found. Creating placeholder..."
+            echo "# Data update placeholder" > data/exploits/README.md
+          fi
+
+          # Check if there are changes
+          if [[ -n $(git status -s) ]]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected in data files"
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes detected"
+          fi
+
+      - name: Create Pull Request
+        if: steps.fetch-data.outputs.has_changes == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: automated exploit database update'
+          title: '🤖 Automated Exploit Database Update'
+          body: |
+            ## Automated Data Update
+
+            This PR contains automated updates to the
+            historical exploit database.
+
+            ### Changes
+            - Updated exploit data from public sources
+            - Timestamp: ${{ github.run_id }}
+
+            ### Review Checklist
+            - [ ] Verify data accuracy
+            - [ ] Check for new exploit patterns
+            - [ ] Ensure risk taxonomy alignment
+
+            ---
+            *This PR was automatically created by the data-update workflow*
+          branch: automated-data-update-${{ github.run_number }}
+          delete-branch: true
+          labels: |
+            automated
+            data-update
+
+      - name: Notify on Failure
+        if: failure()
+        run: |
+          echo "::error::Data update workflow failed. Please check the logs."
+          echo "Failed at: $(date)"
